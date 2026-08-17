@@ -4,105 +4,71 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000">
-<title>KALEIDOLAND OS | V17 LIVE</title>
+<title>KALEIDOLAND OS V18 LIVE CHART - ONEPLUS 9</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
-:root{--gold:#D4AF37;--green:#00ff41;--bg:#050505;--card:#0f0f0f;--border:#1f1f1f}
+:root{--gold:#D4AF37;--green:#00ff41;--border:#1f1f1f;--card:#0f0f0f}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#050505;color:#eaeaea;font-family:Inter,sans-serif;display:flex;justify-content:center;min-height:100vh;overflow-x:hidden}
-.app{width:100%;max-width:440px;background:#000;min-height:100dvh;border-left:1px solid var(--border);border-right:1px solid var(--border);display:flex;flex-direction:column;position:relative}
-@media(min-width:900px){body{padding:24px;background:radial-gradient(800px 400px at 50% -5%,#1a1a08 0%,#050505 70%)}.app{border-radius:28px;box-shadow:0 0 0 1px #222,0 40px 80px rgba(0,0,0,.9),0 0 100px rgba(212,175,55,.12)}}
-.top{position:sticky;top:0;z-index:20;background:rgba(0,0,0,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
-.live-dot{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green);animation:pulse 1.5s infinite}
-@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.3);opacity:.6}}
+body{background:#050505;color:#eaeaea;font-family:Inter;display:flex;justify-content:center}
+.app{width:100%;max-width:440px;background:#000;min-height:100dvh;border-left:1px solid var(--border);border-right:1px solid var(--border);display:flex;flex-direction:column}
+.top{position:sticky;top:0;z-index:10;background:rgba(0,0,0,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+.dot{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green);animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 .badge{font-family:JetBrains Mono;font-size:9px;color:var(--green);background:#001a00;border:1px solid #003300;padding:5px 9px;border-radius:8px}
-.hero{padding:22px 16px}
-h1{font-size:32px;line-height:.9;font-weight:900;letter-spacing:-.04em}h1 span{color:var(--gold)}
-.pue-card{background:linear-gradient(180deg,#0f0f0f 0%,#0a0a0a 100%);border:1px solid var(--border);border-radius:20px;padding:16px;margin:12px 16px;position:relative;overflow:hidden}
-.pue-card::before{content:"";position:absolute;top:0;left:-50%;width:200%;height:1px;background:linear-gradient(90deg,transparent,var(--green),transparent);animation:shimmer 2s infinite}
-@keyframes shimmer{0%{transform:translateX(-50%)}100%{transform:translateX(50%)}}
-.pue-row{display:flex;justify-content:space-between;align-items:end}
-.pue-big{font-size:48px;font-weight:900;letter-spacing:-.05em;color:var(--green);text-shadow:0 0 20px rgba(0,255,65,.4)}
-.pue-label{font-family:JetBrains Mono;font-size:9px;color:#666}
+.hero{padding:16px}
+h1{font-size:26px;font-weight:900;line-height:.95}h1 span{color:var(--gold)}
+.pue-card{margin:8px 16px;background:linear-gradient(180deg,#0f0f0f,#0a0a0a);border:1px solid var(--border);border-radius:18px;padding:14px}
+.pue-big{font-size:40px;font-weight:900;color:var(--green);text-shadow:0 0 18px rgba(0,255,65,.35)}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.cell{background:var(--card);padding:12px;text-align:center}
-.cell b{display:block;font-size:16px;font-weight:900}
-.cell span{font-family:JetBrains Mono;font-size:8px;color:#666}
-.section{padding:14px 16px}
-.t{font-family:JetBrains Mono;font-size:9px;color:#555;letter-spacing:.15em;margin-bottom:10px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:10px;position:relative}
-.mono{font-family:JetBrains Mono;font-size:11px;color:#aaa;line-height:1.5}
-.agents{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.agent{border:1px solid var(--border);background:#0a0a0a;border-radius:12px;padding:10px}
-.agent b{font-size:11px;color:#fff;display:block}
-.agent span{font-family:JetBrains Mono;font-size:8px;color:#666}
-.bar{height:5px;background:#111;border-radius:99px;margin-top:6px;overflow:hidden;border:1px solid var(--border)}
-.fill{height:100%;background:linear-gradient(90deg,var(--green),var(--gold));border-radius:99px;transition:width .8s ease}
-.nav{position:sticky;bottom:0;background:rgba(0,0,0,.9);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:10px 0 16px}
-.nav a{font-family:JetBrains Mono;font-size:9px;color:#555;text-decoration:none;text-align:center}.nav a.on{color:var(--green)}
-canvas#fx{position:absolute;top:0;left:0;width:100%;height:260px;pointer-events:none;opacity:.25}
+.cell{background:var(--card);padding:10px;text-align:center}.cell b{display:block;font-size:15px;font-weight:900}.cell span{font-family:JetBrains Mono;font-size:8px;color:#666}
+.section{padding:10px 16px}
+.t{font-family:JetBrains Mono;font-size:9px;color:#555;letter-spacing:.15em;margin:10px 0 6px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:12px;margin-bottom:8px}
+.mono{font-family:JetBrains Mono;font-size:11px;color:#aaa;line-height:1.4}
+.chartWrap{height:170px}
+.agents{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.agent{border:1px solid var(--border);background:#0a0a0a;border-radius:10px;padding:8px}
+.nav{position:sticky;bottom:0;background:rgba(0,0,0,.9);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:8px 0 14px}
+.nav a{font-family:JetBrains Mono;font-size:9px;color:#555;text-decoration:none}.nav a.on{color:var(--green)}
 </style>
 </head>
 <body>
 <div class="app">
-<div class="top"><b style="font-size:12px">KALEIDOLAND <span style="color:var(--gold)">OS</span></b><div style="display:flex;gap:8px;align-items:center"><div class="live-dot"></div><div class="badge" id="dso">DSO2026029088 LIVE</div></div></div>
-<div style="position:relative"><canvas id="fx"></canvas>
-<div class="hero"><h1>KALEIDOLAND<br><span>OS</span> V17<br>MATRICE 334</h1><div class="mono" style="margin-top:8px;color:#777">Lille Wazemmes 15 ans • T46 Labourse<br><span id="coord">50.49991 / 2.68213</span> • <span id="live-time">--:--:--</span></div></div>
-</div>
-
-<div class="pue-card" id="pueCard">
-<div class="pue-row"><div><div class="pue-label">PUE LIVE • T46</div><div class="pue-big" id="pueVal">1.14</div><div class="mono"><span id="tempVal">12-14°C</span> • <span id="flowVal">700m³/h</span></div></div><div style="text-align:right"><div class="pue-label">WUE</div><div style="font-size:24px;font-weight:900" id="wueVal">0.18</div><div class="pue-label">CFE <span id="cfeVal">64.66%</span></div><div class="mono" style="font-size:10px;margin-top:4px">8760h</div></div></div>
-</div>
-
-<div class="grid3">
-<div class="cell"><b id="aCount">20</b><span>AGENTS LIVE</span></div>
-<div class="cell"><b>332/334</b><span>AUDITÉES</span><div class="bar"><div class="fill" style="width:99.4%"></div></div></div>
-<div class="cell"><b>42MW</b><span>MESH x42</span></div>
-</div>
-
+<div class="top"><b style="font-size:12px">KALEIDOLAND <span style="color:var(--gold)">OS</span> V18</b><div style="display:flex;gap:6px;align-items:center"><div class="dot"></div><div class="badge">ONEPLUS 9 LIVE</div></div></div>
+<div class="hero"><h1>MATRICE 334<br><span>PUE 1.14</span> LIVE</h1><div class="mono" id="liveTime" style="color:#666;margin-top:4px">Tailscale 100.88.137.9 • Termux</div></div>
+<div class="pue-card"><div style="display:flex;justify-content:space-between"><div><div class="mono" style="font-size:9px">PUE LIVE T46</div><div class="pue-big" id="pueV">1.14</div><div class="mono">Public safe</div></div><div style="text-align:right"><div class="mono" style="font-size:9px">WUE</div><div style="font-size:20px;font-weight:900" id="wueV">0.18</div><div class="mono">CFE <b id="cfeV">64.66%</b><br>8760h</div></div></div></div>
+<div class="grid3"><div class="cell"><b id="aCnt">20</b><span>AGENTS</span></div><div class="cell"><b>332/334</b><span>AUDIT</span></div><div class="cell"><b>42MW</b><span>MESH</span></div></div>
 <div class="section">
-<div class="t">AGENTS TEMPS RÉEL • API.KALEIDOLAND.FR</div>
-<div class="agents" id="agentsGrid">Chargement agents...</div>
-<div class="t" style="margin-top:14px">MESH x42 • ROBOTS</div>
-<div class="card"><div class="mono"><b style="color:#fff">42MW • 766ha • 14028 terrils • 840 agents</b><br>Valo 630M€-1.05B€ • PUE <span id="meshPue">1.14</span><br><span id="robotsStatus">Robots: Geocooling + PV Flottant LIVE</span></div></div>
-<div class="t">TERRIL 46 LABOURSE</div>
-<div class="card"><div class="mono"><b style="color:var(--green)">T46 LABOURSE 50.49991/2.68213</b><br>HTB 120m • FLOW 700m³/h • 12-14°C<br>Geocooling • PV Flottant • Boucle 2<br>WUE 0.18 • CFE 8760h • HASH 7Wmdy...</div></div>
+<div class="t">CFE 8760H • PUBLIC SAFE • CHART.JS</div>
+<div class="card"><div class="chartWrap"><canvas id="cfeChart"></canvas></div><div class="mono" style="font-size:9px;color:#555;margin-top:6px">Données publiques agrégées mensuelles • Pas de device_id, pas de coords exactes, pas de FLOW secret. DSO2026029088 SIREN 102465952</div></div>
+<div class="t">AGENTS LIVE - ONEPLUS 9</div>
+<div class="agents" id="agents"></div>
 </div>
-
-<div style="padding:12px 16px 20px;text-align:center" class="mono"><span style="color:#333">© 2026 KALEIDOLAND DSO2026029088 SIREN 102465952<br>clement@kaleidoland.fr — 06 02 31 16 21 — PUE 1.14</span></div>
-<div class="nav"><a class="on">◉<br>OS</a><a>⬢<br>MAP</a><a>⚡<br>PUE</a><a>◍<br>API</a></div>
+<div class="nav"><a class="on">◉<br>OS</a><a>⬢<br>CHART</a><a>⚡<br>PUE</a><a>◍<br>API</a></div>
 </div>
-
 <script>
 const API='https://api.kaleidoland.fr';
+let chart;
+function initChart(){
+ const months=["Jan","Fev","Mar","Avr","Mai","Jun","Jul","Aou","Sep","Oct","Nov","Dec"];
+ const cfe=[62.1,63.5,64.8,65.2,66.0,64.3,63.9,64.1,65.5,66.2,65.8,64.6];
+ const ctx=document.getElementById('cfeChart').getContext('2d');
+ chart=new Chart(ctx,{type:'line',data:{labels:months,datasets:[{label:'CFE % public',data:cfe,borderColor:'#00ff41',backgroundColor:'rgba(0,255,65,0.15)',tension:0.4,fill:true,pointRadius:0,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'#1a1a1a'},ticks:{color:'#666',font:{size:9,family:'JetBrains Mono'}}},y:{min:60,max:68,grid:{color:'#1a1a1a'},ticks:{color:'#666'}}}}});
+}
 async function live(){
  try{
-  const [pue,agents,mesh]=await Promise.all([
-   fetch(API+'/api/pue/live').then(r=>r.json()),
-   fetch(API+'/api/agents').then(r=>r.json()),
-   fetch(API+'/api/mesh/x42').then(r=>r.json()).catch(()=>({mw:42}))
-  ]);
-  document.getElementById('pueVal').textContent=pue.pue.toFixed(2);
-  document.getElementById('wueVal').textContent=pue.wue;
-  document.getElementById('cfeVal').textContent=pue.cfe_percent+'%';
-  document.getElementById('tempVal').textContent=pue.temp_c;
-  document.getElementById('flowVal').textContent=pue.flow_m3h;
-  document.getElementById('meshPue').textContent=pue.pue;
-  document.getElementById('aCount').textContent=agents.count;
-  document.getElementById('live-time').textContent=new Date().toLocaleTimeString();
-  const grid=document.getElementById('agentsGrid');grid.innerHTML='';
-  agents.agents.slice(0,8).forEach(a=>{
-   const d=document.createElement('div');d.className='agent';
-   d.innerHTML=`<b>${a.name.replace('Agent ','')}</b><span>${a.status} • PUE ${a.pue}</span><div class="bar"><div class="fill" style="width:${a.status=='LIVE'?100:20}%"></div></div>`;
-   grid.appendChild(d);
-  });
- }catch(e){console.log('api error',e)}
+  const [pue,agents]=await Promise.all([fetch(API+'/api/pue/live').then(r=>r.json()),fetch(API+'/api/agents').then(r=>r.json())]);
+  document.getElementById('pueV').textContent=pue.pue.toFixed(2);
+  document.getElementById('wueV').textContent=pue.wue;
+  document.getElementById('cfeV').textContent=pue.cfe_percent+'%';
+  document.getElementById('aCnt').textContent=agents.count;
+  document.getElementById('liveTime').textContent=new Date().toLocaleTimeString()+' • 100.88.137.9 • DSO2026029088';
+  const g=document.getElementById('agents');g.innerHTML='';
+  agents.agents.slice(0,6).forEach(a=>{const d=document.createElement('div');d.className='agent';d.innerHTML=`<b style="font-size:11px;color:#fff">${a.name.replace('Agent ','')}</b><br><span style="font-family:JetBrains Mono;font-size:8px;color:#666">${a.status} • ${a.role}</span>`;g.appendChild(d);});
+ }catch(e){console.log(e)}
 }
-live();setInterval(live,3000);
-// FX particles
-const c=document.getElementById('fx'),ctx=c.getContext('2d');function resize(){c.width=c.offsetWidth*2;c.height=260*2}resize();
-let pts=Array.from({length:40},()=>({x:Math.random()*c.width,y:Math.random()*c.height,vx:(Math.random()-.5)*0.6,vy:(Math.random()-.5)*0.6}));
-function draw(){ctx.clearRect(0,0,c.width,c.height);ctx.fillStyle='#00ff41';pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>c.width)p.vx*=-1;if(p.y<0||p.y>c.height)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,1.5,0,Math.PI*2);ctx.fill();});pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{const dx=a.x-b.x,dy=a.y-b.y,d=Math.hypot(dx,dy);if(d<120){ctx.strokeStyle=`rgba(0,255,65,${(1-d/120)*0.15})`;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}})});requestAnimationFrame(draw)}draw();
+initChart();live();setInterval(live,3000);
 </script>
 </body>
 </html>
